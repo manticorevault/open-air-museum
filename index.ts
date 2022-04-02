@@ -1,6 +1,9 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+
+const StreetArt = require("./models/streetart");
+
 const dotenv = require("dotenv")
 
 dotenv.config();
@@ -26,6 +29,17 @@ app.set("views", path.join(__dirname, "views"))
 
 app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
+});
+
+app.get("/add-art", async (req: any, res: { send: (arg0: any) => void; }) => {
+    const streetArt = new StreetArt({
+        title: "Emoboy",
+        description: "Remember you emoboy next to the river"
+    });
+
+    await streetArt.save();
+
+    res.send(streetArt);
 });
 
 app.listen(3000, () => {
