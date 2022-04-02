@@ -34,7 +34,7 @@ app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
 app.get("/add-art", async (req: any, res: { send: (arg0: any) => void; }) => {
     const streetArt = new StreetArt({
         title: "Emoboy",
-        description: "Remember you emoboy next to the river"
+        description: "Remember you emoboy next to the river."
     });
 
     await streetArt.save();
