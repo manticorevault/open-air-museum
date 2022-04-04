@@ -30,15 +30,10 @@ app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
 });
 
-app.get("/add-art", async (req: any, res: { send: (arg0: any) => void; }) => {
-    const streetArt = new StreetArt({
-        title: "Emoboy",
-        description: "Remember you emoboy next to the river."
-    });
+app.get("/street-arts", async (req: any, res: { render: (arg0: any, arg1: any) => void; }) => {
+    const streetarts = await (StreetArt.find({}))
 
-    await streetArt.save();
-
-    res.send(streetArt);
+    res.render("streetarts/index", {streetarts})
 });
 
 app.listen(3000, () => {
