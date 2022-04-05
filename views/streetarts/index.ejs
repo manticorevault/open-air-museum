@@ -15,7 +15,9 @@
     <ul>
         <% for (let streetart of streetarts) { %>
             <li>
-                <%= streetart.title %>
+                <a href="<%= streetart._id %>"> 
+                    <%= streetart.title %>
+                </a>
             </li>
         <% } %>
     </ul>

@@ -36,6 +36,11 @@ app.get("/street-arts", async (req: any, res: { render: (arg0: any, arg1: any) =
     res.render("streetarts/index", {streetarts})
 });
 
+app.get("/street-arts/:id", async (req: any, res: { render: (arg0: string, arg1: any) => void; }) => {
+    const streetart = await StreetArt.findById(req.params.id)
+    res.render("streetarts/show", { streetart })
+});
+
 app.listen(3000, () => {
     console.log("Server up on port 3000! 🚀")
 })
