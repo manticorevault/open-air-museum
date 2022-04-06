@@ -26,6 +26,9 @@ const app = express();
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 
+// Parse the req body
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
 });
@@ -34,6 +37,17 @@ app.get("/street-arts", async (req: any, res: { render: (arg0: any, arg1: any) =
     const streetarts = await (StreetArt.find({}))
 
     res.render("streetarts/index", {streetarts})
+});
+
+app.get("/street-arts/create", (req: any, res: { render: (arg0: string) => void; }) => {
+    res.render("streetarts/new")
+});
+
+app.post("/street-arts", async(req: { body: { streetart: any; }; }, res: { send: (arg0: any) => any; redirect: (arg0: string) => void; }) => {
+    const streetArt = new StreetArt(req.body.streetart);
+
+    await streetArt.save();
+    res.redirect(`/street-arts/${streetArt._id}`)
 });
 
 app.get("/street-arts/:id", async (req: any, res: { render: (arg0: string, arg1: any) => void; }) => {
