@@ -17,10 +17,23 @@
         <%= streetart.location %>
     </h2>
 
+    <p href="/street-arts/<%=streetart._id%>/edit"> 
+        Edit
+    </p>
+
+    <p>
+        <form 
+            action="/street-arts/<%=streetart._id%>?_method=DELETE"
+            method="POST"
+        >
+            <button>
+                Delete
+            </button>
+        </form>
+    </p>
+
     <footer>
-        <a href="/street-arts/<%=streetart._id%>/edit"> 
-            Edit
-        </a>
+
         <a href="/street-arts"> 
             Show all street arts
         </a>

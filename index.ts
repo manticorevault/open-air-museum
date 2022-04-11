@@ -67,7 +67,13 @@ app.put("/street-arts/:id", async (req: { params: { id: any; }; body: { streetar
     const streetart = await StreetArt.findByIdAndUpdate(id, {...req.body.streetart})
 
     res.redirect(`/street-arts/${streetart._id}`)
-})
+});
+
+app.delete("/street-arts/:id", async (req: { params: { id: any; }; }, res: { redirect: (arg0: string) => void; }) => {
+    const { id } = req.params;
+    await StreetArt.findByIdAndDelete(id);
+    res.redirect("/street-arts")
+});
 
 app.listen(3000, () => {
     console.log("Server up on port 3000! 🚀")
