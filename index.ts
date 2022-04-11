@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const methodOverride = require("method-override");
 
 const StreetArt = require("./models/streetart");
 
@@ -28,6 +29,7 @@ app.set("views", path.join(__dirname, "views"))
 
 // Parse the req body
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
@@ -59,6 +61,13 @@ app.get("/street-arts/:id/edit", async(req: { params: { id: any; }; }, res: { re
     const streetart = await StreetArt.findById(req.params.id)
     res.render("streetarts/edit", { streetart })
 });
+
+app.put("/street-arts/:id", async (req: { params: { id: any; }; body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }) => {
+    const { id } = req.params;
+    const streetart = await StreetArt.findByIdAndUpdate(id, {...req.body.streetart})
+
+    res.redirect(`/street-arts/${streetart._id}`)
+})
 
 app.listen(3000, () => {
     console.log("Server up on port 3000! 🚀")

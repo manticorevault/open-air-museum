@@ -8,23 +8,33 @@
 </head>
 <body>
     <h1> Edit Street Art </h1>
-    <form action="/street-arts" method="POST">
+    <form action="/street-arts/<%=streetart._id %>?_method=PUT" method="POST">
         <div>
             <label for="title">
                 Title
             </label>
-            <input type="text" id="title" name="streetart[title]"/>
+            <input 
+                type="text" 
+                id="title" 
+                name="streetart[title]"
+                value="<%=streetart.title%>"
+            />
         </div>
 
         <div>
             <label for="location">
                 Location
             </label>
-            <input type="text" id="location" name="streetart[location]"/>
+            <input 
+                type="text" 
+                id="location" 
+                name="streetart[location]"
+                value="<%=streetart.location%>"
+            />
         </div>
 
         <button>
-            Create Street Art
+            Update Street Art
         </button>
     </form>
     <a href="/street-arts/<% streetart._id%>"> 
