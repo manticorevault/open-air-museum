@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show Art</title>
-</head>
-<body>
+<% layout("layouts/boilerplate") %>
     <h1>
         THIS IS:
     </h1>
@@ -17,9 +9,9 @@
         <%= streetart.location %>
     </h2>
 
-    <p href="/street-arts/<%=streetart._id%>/edit"> 
+    <a href="/street-arts/<%=streetart._id%>/edit"> 
         Edit
-    </p>
+    </a>
 
     <p>
         <form 
@@ -38,5 +30,3 @@
             Show all street arts
         </a>
     </footer>
-</body>
-</html>
