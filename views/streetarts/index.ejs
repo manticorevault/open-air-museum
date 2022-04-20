@@ -8,13 +8,38 @@
             Add new Street Art
         </a>
     </div>
+    <% for (let streetart of streetarts) { %>
+        <div class="card" mb-3>
+            <div class="row">
+                <div class="col-md-4">
+                    <img 
+                        class="img-fluid" 
+                        alt=""
+                        src="<%= streetart.image %>"
+                    >
+                </div>
+                <div class="col-md-8">
 
-    <ul>
-        <% for (let streetart of streetarts) { %>
-            <li>
-                <a href="/street-arts/<%= streetart._id %>"> 
-                    <%= streetart.title %>
-                </a>
-            </li>
-        <% } %>
-    </ul>
+                    <div class="card-body">
+                        <h5 class="card-title"> 
+                            <%= streetart.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= streetart.description %>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%= streetart.location %>
+                            </small>
+                        </p>
+                        <a 
+                            class="btn btn-primary"
+                            href="street-arts/<%= streetart._id %>"
+                        >
+                            View <%= streetart.title %>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
