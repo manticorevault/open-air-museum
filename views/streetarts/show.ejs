@@ -1,29 +1,42 @@
 <% layout("layouts/boilerplate") %>
-    <h1>
-        THIS IS:
-    </h1>
-    <h1>
-        <%= streetart.title %>
-    </h1>
-    <h2>
-        <%= streetart.location %>
-    </h2>
-    <img src="<%= streetart.image%>" alt="" />
-    <p> <%= streetart.description %>"" </p>
-    <a href="/street-arts/<%=streetart._id%>/edit"> 
-        Edit
-    </a>
 
-    <p>
-        <form 
-            action="/street-arts/<%=streetart._id%>?_method=DELETE"
-            method="POST"
-        >
-            <button>
-                Delete
-            </button>
-        </form>
-    </p>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <img src="<%= streetart.image%>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><%= streetart.title%></h5>
+              <p class="card-text"><%= streetart.description%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-muted"><%= streetart.author%></li>
+              <li class="list-group-item"><%= streetart.location%></li>
+            </ul>
+            <div class="card-body">
+                <a 
+                    class="card-link btn btn-info"
+                    href="/street-arts/<%=streetart._id%>/edit"
+                > 
+                    Edit
+                </a>
+              
+                <form 
+                    class="d-inline"
+                    action="/street-arts/<%=streetart._id%>?_method=DELETE"
+                    method="POST"
+                >
+                    <button class="btn btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </div>
+            <div class="card-footer text-muted">
+                Posted 3 days ago
+            </div>
+          </div>
+    </div>
+</div>
+
 
     <footer>
 
