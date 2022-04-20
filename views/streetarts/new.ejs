@@ -1,23 +1,96 @@
 <% layout("layouts/boilerplate") %>
-    <form action="/street-arts" method="POST">
-        <div>
-            <label for="title">
-                Title
-            </label>
-            <input type="text" id="title" name="streetart[title]"/>
-        </div>
+<div class="row">
+    <h1 class="text-center">
+        Add Street Art
+    </h1>
 
-        <div>
-            <label for="location">
-                Location
-            </label>
-            <input type="text" id="location" name="streetart[location]"/>
-        </div>
+    <div class="col-6 offset-3">
+        <form action="/street-arts" method="POST">
+            <div class="mb-3">
+                <label 
+                    class="form-label"
+                    for="title"
+                >
+                    Title
+                </label>
+                <input 
+                    class="form-control"
+                    type="text" 
+                    id="title" 
+                    name="streetart[title]"
+                />
+            </div>
 
-        <button>
-            Add Street Art
-        </button>
-    </form>
-    <a href="/street-arts"> 
-        Show all street arts
-    </a>
+            <div class="mb-3">
+                <label 
+                    class="form-label"
+                    for="author" 
+                >
+                    Author
+                </label>
+                <input 
+                    class="form-control"
+                    type="text"    
+                    id="author" 
+                    name="streetart[author]"
+                />
+            </div>
+    
+            <div class="mb-3">
+                <label 
+                    class="form-label"
+                    for="location" 
+                >
+                    Location
+                </label>
+                <input 
+                    class="form-control"
+                    type="text"    
+                    id="location" 
+                    name="streetart[location]"
+                />
+            </div>
+    
+            <div class="mb-3">
+                <label 
+                    class="form-label"
+                    for="image" 
+                >
+                    Image Url 
+                </label>
+                <input 
+                    class="form-control"
+                    type="text"    
+                    id="image" 
+                    name="streetart[image]"
+                />
+            </div>
+
+            <div class="mb-3">
+                <label 
+                    class="form-label"
+                    for="description" 
+                >
+                    Description
+                </label>
+                <textarea 
+                    class="form-control"
+                    type="text"    
+                    id="description" 
+                    name="streetart[description]"
+                > 
+                </textarea>
+            </div>
+
+            <div class="div mb-3">
+                <button class="btn btn-success">
+                    Add Street Art
+                </button>
+            </div>
+
+        </form>
+        <a href="/street-arts"> 
+            Show all street arts
+        </a>
+    </div>
+</div>
