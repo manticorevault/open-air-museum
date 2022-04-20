@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const StreetArtSchema = new Schema({
     title: String,
+    image: String,
     description: String,
     location: String
 });

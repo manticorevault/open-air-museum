@@ -35,11 +35,15 @@ const seedDB = async () => {
         const number = Math.floor(Math.random() * 1000)
         const art = new StreetArt({
             location: `${ cities[number].city }`,
-            title: `${ sampleArt(descriptors) } ${ sampleArt(places) }`
-        })
+            title: `${ sampleArt(descriptors) } ${ sampleArt(places) }`,
+            image: "https://source.unsplash.com/collection/9622459",
+            author: "Banksy",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        });
 
         await art.save();
     }
 };
 
 seedDB();
+
