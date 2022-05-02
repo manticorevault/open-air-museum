@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
-const Joi = require("joi");
+const { streetartSchema }  = require("./schemas")
 const methodOverride = require("method-override");
 const catchAsync = require("./helpers/catchAsync");
 
@@ -39,6 +39,19 @@ app.set("views", path.join(__dirname, "views"))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+const validateStreetArt = (req: { body: any; }, res: any, next: () => void) => {
+    // Validate the streetartSchema with Joi.
+    const { error } = streetartSchema.validate(req.body);
+
+    if(error) {
+        const message = error.details.map((element: { message: any; }) => element.message).join(",")
+
+        throw new ExpressError(message, 400);
+    } else {
+        next();
+    }
+}
+
 app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
 });
@@ -53,27 +66,7 @@ app.get("/street-arts/create", (req: any, res: { render: (arg0: string) => void;
     res.render("streetarts/new")
 });
 
-app.post("/street-arts", catchAsync (async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
-   
-    // if(!req.body.streetart) throw new ExpressError("Invalid Street Art data", 400);
-    const streetartSchema = Joi.object({
-            streetart: Joi.object({
-                title: Joi.string().required(),
-                author: Joi.string(),
-                location: Joi.string().required(),
-                image: Joi.string().required(),
-                description: Joi.string().required()
-            }).required
-    })
-
-    // Validate the streetartSchema with Joi.
-    const { error } = streetartSchema.validate(req.body);
-
-    if(error) {
-        const message = error.details.map((element: { message: any; }) => element.message).join(",")
-
-        throw new ExpressError(message, 400);
-    }
+app.post("/street-arts", validateStreetArt, catchAsync (async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
 
     const streetArt = new StreetArt(req.body.streetart);
 
@@ -92,7 +85,7 @@ app.get("/street-arts/:id/edit", catchAsync(async(req: { params: { id: any; }; }
     res.render("streetarts/edit", { streetart })
 }));
 
-app.put("/street-arts/:id", catchAsync(async (req: { params: { id: any; }; body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }) => {
+app.put("/street-arts/:id", validateStreetArt, catchAsync(async (req: { params: { id: any; }; body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }) => {
     const { id } = req.params;
     const streetart = await StreetArt.findByIdAndUpdate(id, {...req.body.streetart})
 
