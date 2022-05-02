@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
 const methodOverride = require("method-override");
+const catchAsync = require("./helpers/catchAsync");
 
 const StreetArt = require("./models/streetart");
 
@@ -37,52 +38,53 @@ app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
 });
 
-app.get("/street-arts", async (req: any, res: { render: (arg0: any, arg1: any) => void; }) => {
+app.get("/street-arts", catchAsync(async (req: any, res: { render: (arg0: any, arg1: any) => void; }) => {
     const streetarts = await (StreetArt.find({}))
 
     res.render("streetarts/index", {streetarts})
-});
+}));
 
 app.get("/street-arts/create", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("streetarts/new")
 });
 
-app.post("/street-arts", async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
-    try {
-        const streetArt = new StreetArt(req.body.streetart);
+app.post("/street-arts", catchAsync (async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
+    const streetArt = new StreetArt(req.body.streetart);
 
-        await streetArt.save();
-        res.redirect(`/street-arts/${streetArt._id}`)
-    } catch (err) {
-        next(err)
-    }
-});
+    await streetArt.save();
+    res.redirect(`/street-arts/${streetArt._id}`)
 
-app.get("/street-arts/:id", async (req: any, res: { render: (arg0: string, arg1: any) => void; }) => {
+}));
+
+app.get("/street-arts/:id", catchAsync(async (req: any, res: { render: (arg0: string, arg1: any) => void; }) => {
     const streetart = await StreetArt.findById(req.params.id)
     res.render("streetarts/show", { streetart })
-});
+}));
 
-app.get("/street-arts/:id/edit", async(req: { params: { id: any; }; }, res: { render: (arg0: string, arg1: { streetart: any; }) => void; }) => {
+app.get("/street-arts/:id/edit", catchAsync(async(req: { params: { id: any; }; }, res: { render: (arg0: string, arg1: { streetart: any; }) => void; }) => {
     const streetart = await StreetArt.findById(req.params.id)
     res.render("streetarts/edit", { streetart })
-});
+}));
 
-app.put("/street-arts/:id", async (req: { params: { id: any; }; body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }) => {
+app.put("/street-arts/:id", catchAsync(async (req: { params: { id: any; }; body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }) => {
     const { id } = req.params;
     const streetart = await StreetArt.findByIdAndUpdate(id, {...req.body.streetart})
 
     res.redirect(`/street-arts/${streetart._id}`)
-});
+}));
 
-app.delete("/street-arts/:id", async (req: { params: { id: any; }; }, res: { redirect: (arg0: string) => void; }) => {
+app.delete("/street-arts/:id", catchAsync(async (req: { params: { id: any; }; }, res: { redirect: (arg0: string) => void; }) => {
     const { id } = req.params;
     await StreetArt.findByIdAndDelete(id);
     res.redirect("/street-arts")
+}));
+
+app.all("*", (req: any, res: { send: (arg0: string) => void; }, next: any) => {
+    res.send("404! Error!")
 });
 
 app.use((err: any, req: any, res: { send: (arg0: string) => void; }, next: any) => {
-    res.send("Error! Something")
+    res.send("Error! Something went wrong!")
 })
 
 app.listen(3000, () => {
