@@ -89,9 +89,10 @@ app.all("*", (req: any, res: { send: (arg0: string) => void; }, next: any) => {
     next(new ExpressError("Page Not Found!", 404))
 });
 
-app.use((err: any, req: any, res: { status: (arg0: any) => { (): any; new(): any; send: { (arg0: any): void; new(): any; }; }; }, next: any) => {
+app.use((err: any, req: any, res: { status: (arg0: any) => { (): any; new(): any; render: { (arg0: string, arg1: { err: any; }): void; new(): any; }; }; }, next: any) => {
     const { statusCode = 500, message = "Something went wrong!"} = err;
-    res.status(statusCode).send(message)
+    if(!err.message) err.message = "Oops! Something went wrong here ):"
+    res.status(statusCode).render("error", { err })
 })
 
 app.listen(3000, () => {
