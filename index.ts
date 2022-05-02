@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
+const Joi = require("joi");
 const methodOverride = require("method-override");
 const catchAsync = require("./helpers/catchAsync");
 
@@ -54,7 +55,26 @@ app.get("/street-arts/create", (req: any, res: { render: (arg0: string) => void;
 
 app.post("/street-arts", catchAsync (async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
    
-    if(!req.body.streetart) throw new ExpressError("Invalid Street Art data", 400);
+    // if(!req.body.streetart) throw new ExpressError("Invalid Street Art data", 400);
+    const streetartSchema = Joi.object({
+            streetart: Joi.object({
+                title: Joi.string().required(),
+                author: Joi.string(),
+                location: Joi.string().required(),
+                image: Joi.string().required(),
+                description: Joi.string().required()
+            }).required
+    })
+
+    // Validate the streetartSchema with Joi.
+    const { error } = streetartSchema.validate(req.body);
+
+    if(error) {
+        const message = error.details.map((element: { message: any; }) => element.message).join(",")
+
+        throw new ExpressError(message, 400);
+    }
+
     const streetArt = new StreetArt(req.body.streetart);
 
     await streetArt.save();
