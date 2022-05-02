@@ -47,11 +47,15 @@ app.get("/street-arts/create", (req: any, res: { render: (arg0: string) => void;
     res.render("streetarts/new")
 });
 
-app.post("/street-arts", async(req: { body: { streetart: any; }; }, res: { send: (arg0: any) => any; redirect: (arg0: string) => void; }) => {
-    const streetArt = new StreetArt(req.body.streetart);
+app.post("/street-arts", async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
+    try {
+        const streetArt = new StreetArt(req.body.streetart);
 
-    await streetArt.save();
-    res.redirect(`/street-arts/${streetArt._id}`)
+        await streetArt.save();
+        res.redirect(`/street-arts/${streetArt._id}`)
+    } catch (err) {
+        next(err)
+    }
 });
 
 app.get("/street-arts/:id", async (req: any, res: { render: (arg0: string, arg1: any) => void; }) => {
@@ -77,6 +81,11 @@ app.delete("/street-arts/:id", async (req: { params: { id: any; }; }, res: { red
     res.redirect("/street-arts")
 });
 
+app.use((err: any, req: any, res: { send: (arg0: string) => void; }, next: any) => {
+    res.send("Error! Something")
+})
+
 app.listen(3000, () => {
     console.log("Server up on port 3000! 🚀")
 })
+
