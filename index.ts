@@ -5,6 +5,10 @@ const engine = require("ejs-mate");
 const methodOverride = require("method-override");
 const catchAsync = require("./helpers/catchAsync");
 
+// Imports the ExpressError helper, and fixing the error with ES Module convertion
+const ExpressError = require("./helpers/ExpressError");
+export {}
+
 const StreetArt = require("./models/streetart");
 
 const dotenv = require("dotenv")
@@ -49,6 +53,8 @@ app.get("/street-arts/create", (req: any, res: { render: (arg0: string) => void;
 });
 
 app.post("/street-arts", catchAsync (async(req: { body: { streetart: any; }; }, res: { redirect: (arg0: string) => void; }, next: (arg0: any) => void) => {
+   
+    if(!req.body.streetart) throw new ExpressError("Invalid Street Art data", 400);
     const streetArt = new StreetArt(req.body.streetart);
 
     await streetArt.save();
@@ -80,11 +86,12 @@ app.delete("/street-arts/:id", catchAsync(async (req: { params: { id: any; }; },
 }));
 
 app.all("*", (req: any, res: { send: (arg0: string) => void; }, next: any) => {
-    res.send("404! Error!")
+    next(new ExpressError("Page Not Found!", 404))
 });
 
-app.use((err: any, req: any, res: { send: (arg0: string) => void; }, next: any) => {
-    res.send("Error! Something went wrong!")
+app.use((err: any, req: any, res: { status: (arg0: any) => { (): any; new(): any; send: { (arg0: any): void; new(): any; }; }; }, next: any) => {
+    const { statusCode = 500, message = "Something went wrong!"} = err;
+    res.status(statusCode).send(message)
 })
 
 app.listen(3000, () => {
