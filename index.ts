@@ -5,6 +5,7 @@ const engine = require("ejs-mate");
 const { streetartSchema }  = require("./schemas")
 const methodOverride = require("method-override");
 const catchAsync = require("./helpers/catchAsync");
+const Comment = require("./models/comment")
 
 // Imports the ExpressError helper, and fixing the error with ES Module convertion
 const ExpressError = require("./helpers/ExpressError");
@@ -98,6 +99,20 @@ app.delete("/street-arts/:id", catchAsync(async (req: { params: { id: any; }; },
     res.redirect("/street-arts")
 }));
 
+app.post("/street-arts/:id/comments", catchAsync(async(req: { params: { id: any; }; body: { comment: any; }; }, res: any) => {
+    const streetArt = await StreetArt.findById(req.params.id)
+
+    // Instantiate a new comment
+    const comment = new Comment(req.body.comment)
+
+    // Push the new review to the street art
+    streetArt.comments.push(comment)
+    await comment.save()
+    await streetArt.save()
+
+    res.redirect(`/street-arts/${streetArt._id}`);
+}));
+
 app.all("*", (req: any, res: { send: (arg0: string) => void; }, next: any) => {
     next(new ExpressError("Page Not Found!", 404))
 });
@@ -111,4 +126,3 @@ app.use((err: any, req: any, res: { status: (arg0: any) => { (): any; new(): any
 app.listen(3000, () => {
     console.log("Server up on port 3000! 🚀")
 })
-

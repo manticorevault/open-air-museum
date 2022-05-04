@@ -35,8 +35,12 @@
             </div>
           </div>
 
-         <form class="mb-3" action="">
-             <div class="mb-3">
+        <form 
+            class="mb-3" 
+            action="/street-arts/<%=streetart._id%>/comments" 
+            method="POST"
+        >
+            <div class="mb-3">
                 <label class="form-label" for="rating">
                     Rating
                 </label>
@@ -48,8 +52,9 @@
                     name="comment[rating]"
                     id="rating"
 
-                />
-             </div>
+            />
+
+            </div>
             <div class="mb-3">
                 <label for="body" class="form-label">
                     What do you think about this street art?
