@@ -34,6 +34,40 @@
                 Posted 3 days ago
             </div>
           </div>
+
+         <form class="mb-3" action="">
+             <div class="mb-3">
+                <label class="form-label" for="rating">
+                    Rating
+                </label>
+                <input 
+                    class="form-range"
+                    type="range"
+                    min="1"
+                    max="5"
+                    name="comment[rating]"
+                    id="rating"
+
+                />
+             </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">
+                    What do you think about this street art?
+                </label>
+                <textarea
+                    class="form-control"
+                    name="comment[body]"
+                    id="body"
+                    cols="30"
+                    rows="3"    
+                >
+
+                </textarea>
+            </div>
+            <button class="btn btn-success">
+                Comment!
+            </button>
+         </form>
     </div>
 </div>
 
