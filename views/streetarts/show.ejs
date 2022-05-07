@@ -36,9 +36,10 @@
           </div>
 
         <form 
-            class="mb-3" 
+            class="mb-3 validated-form" 
             action="/street-arts/<%=streetart._id%>/comments" 
             method="POST"
+            novalidate
         >
             <div class="mb-3">
                 <label class="form-label" for="rating">
@@ -65,6 +66,7 @@
                     id="body"
                     cols="30"
                     rows="3"    
+                    required
                 >
 
                 </textarea>
