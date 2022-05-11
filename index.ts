@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const engine = require("ejs-mate");
-const { streetartSchema }  = require("./schemas")
+const { streetartSchema, commentSchema }  = require("./schemas")
 const methodOverride = require("method-override");
 const catchAsync = require("./helpers/catchAsync");
 const Comment = require("./models/comment")
@@ -57,6 +57,19 @@ app.get("/", (req: any, res: { render: (arg0: string) => void; }) => {
     res.render("home")
 });
 
+const validateComment = (req: { body: any; }, res: any, next: () => void) => {
+    // Validate the commentSchema with Joi
+    const { error } = commentSchema.validate(req.body);
+
+    if(error) {
+        const message = error.details.map((element: { message: any; }) => element.message).join(",")
+
+        throw new ExpressError(message, 400);
+    } else {
+        next();
+    }
+}
+
 app.get("/street-arts", catchAsync(async (req: any, res: { render: (arg0: any, arg1: any) => void; }) => {
     const streetarts = await (StreetArt.find({}))
 
@@ -99,7 +112,7 @@ app.delete("/street-arts/:id", catchAsync(async (req: { params: { id: any; }; },
     res.redirect("/street-arts")
 }));
 
-app.post("/street-arts/:id/comments", catchAsync(async(req: { params: { id: any; }; body: { comment: any; }; }, res: any) => {
+app.post("/street-arts/:id/comments", validateComment, catchAsync(async(req: { params: { id: any; }; body: { comment: any; }; }, res: any) => {
     const streetArt = await StreetArt.findById(req.params.id)
 
     // Instantiate a new comment
